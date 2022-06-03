@@ -4,33 +4,28 @@ import 'package:componentes/src/providers/peliculas_providers.dart';
 import 'package:componentes/src/widgets/card_swiper_widget.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
+class HomePage extends StatelessWidget {
+  HomePage({Key? key}) : super(key: key);
   final peliculasProvider = PeliculasProvider();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: Text('Phos'),
-        backgroundColor: Colors.greenAccent[400],
+        title: const Text('Phosphophyllite - Peliculas'),
+        backgroundColor: Colors.green[400],
         actions: [
           IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {},
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              print('Search button pressed');
+            },
           ),
         ],
       ),
       body: Container(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             _swiperTarjetas(),
             _footer(context),
@@ -43,11 +38,9 @@ class _HomePageState extends State<HomePage> {
   Widget _swiperTarjetas() {
     return FutureBuilder(
       future: peliculasProvider.getEnCines(),
-      builder: (BuildContext context, AsyncSnapshot<List<Pelicula>> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
         if (snapshot.hasData) {
-          return CardSwiper(
-            movies: snapshot.data ?? [],
-          );
+          return CardSwiper(peliculas: snapshot.data ?? []);
         } else {
           return const SizedBox(
               height: 400.0,
@@ -59,13 +52,17 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _footer(BuildContext conext) {
+  Widget _footer(BuildContext context) {
     return SizedBox(
       width: double.infinity,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Populares', style: Theme.of(context).textTheme.subtitle1),
-          SizedBox(height: 5.0),
+          Container(
+              padding: const EdgeInsets.only(left: 20.0),
+              child: Text('Populares',
+                  style: Theme.of(context).textTheme.subtitle1)),
+          const SizedBox(height: 10.0),
           FutureBuilder(
             future: peliculasProvider.getPopulares(),
             builder:
@@ -76,11 +73,10 @@ class _HomePageState extends State<HomePage> {
                 );
               } else {
                 return const SizedBox(
-                  height: 400.0,
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
+                    height: 400.0,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ));
               }
             },
           ),

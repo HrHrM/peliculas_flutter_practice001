@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class MovieHorizontal extends StatelessWidget {
   const MovieHorizontal({Key? key, required this.peliculas}) : super(key: key);
+
   final List<Pelicula> peliculas;
 
   @override
@@ -10,11 +11,12 @@ class MovieHorizontal extends StatelessWidget {
     final _screenSize = MediaQuery.of(context).size;
 
     return SizedBox(
-      height: _screenSize.height * 0.2,
+      height: _screenSize.height * 0.27,
       child: PageView(
+        pageSnapping: false,
         controller: PageController(
           initialPage: 1,
-          viewportFraction: 0.1,
+          viewportFraction: 0.3,
         ),
         children: _tarjetas(context),
       ),
@@ -30,7 +32,7 @@ class MovieHorizontal extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(20.0),
               child: FadeInImage(
-                placeholder: const AssetImage('assets/img/no-image.jpg'),
+                placeholder: const AssetImage('assets/imgs/no-image.jpg'),
                 image: NetworkImage(pelicula.getPosterImg()),
                 fit: BoxFit.cover,
                 height: 160.0,
