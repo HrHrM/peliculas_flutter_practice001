@@ -17,6 +17,8 @@ class Peliculas {
 }
 
 class Pelicula {
+  String? uniqueId;
+
   bool? adult;
   String? backdropPath;
   List<int>? genreIds;
@@ -70,6 +72,14 @@ class Pelicula {
       return const AssetImage('assets/imgs/no-image.jpg');
     } else {
       return 'https://image.tmdb.org/t/p/w500/$posterPath';
+    }
+  }
+
+  getBackgroundImg() {
+    if (posterPath == null) {
+      return const AssetImage('assets/imgs/no-image.jpg');
+    } else {
+      return 'https://image.tmdb.org/t/p/w500/$backdropPath';
     }
   }
 }
